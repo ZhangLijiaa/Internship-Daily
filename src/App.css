@@ -1,0 +1,98 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  height: 100vh;
+}
+
+.App-header {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  background-color: #98b4ed;
+  min-height: 5rem;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  margin: 1rem;
+  border-radius: 1rem;
+}
+
+.board {
+  display: flex;
+  flex: 10;
+  flex-direction: row;
+  gap: 1rem;
+  margin: 0 1rem 1rem;
+}
+
+.board-column {
+  flex: 1;
+  display: flex; 
+  flex-direction: column;
+  border-radius: 1rem;
+}
+
+.board-column > h3 {
+  margin: 0.5rem 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #E6D0BC;
+}
+
+.board-column > h3 > button {
+  float: right;
+  margin-top: 0.2rem;
+  padding: 0.2rem 0.5rem;
+  border: 0;
+  border-radius: 1rem;
+  height: 1.5rem;
+  line-height: 1rem;
+  font-size: 1rem;
+}
+
+.board-column > ul {
+  flex: 1;
+  flex-basis: 0;
+  margin: 1rem;
+  padding: 0;
+  overflow: auto;
+}
+
+.column-pending {
+  background-color: #CBAF98;
+}
+
+.column-doing {
+  background-color: #FEE99C;
+}
+
+.column-completed {
+  background-color: #C2E9BC;
+}
+
+.card {
+  margin-bottom: 1rem; 
+  padding: 0.6rem 1rem; 
+  border-radius: 1rem; 
+  list-style: none; 
+  background-color:rgba(250, 250, 250, 0.5); 
+  text-align: left;
+}
+
+.card-name {
+  min-height: 3rem;
+}
+
+.card-name > input {
+  border-radius: 1rem;
+  border: 1px solid grey;
+}
+
+.card-time {
+  text-align: right; 
+  font-size: 0.8rem; 
+  color: #BFAB9A;
+}
+
+
+
