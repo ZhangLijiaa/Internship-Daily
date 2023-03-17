@@ -50,4 +50,71 @@
        }
        ```
 
-5. 剩下一点写不动了...明天上午再顺一下
+5. 关于demo实现点击改变状态
+
+   - 点击按钮，清除待完成所有项
+
+     ```js
+     const BoardCard = ({ name, time, transform}) => {
+       return (
+         <li className='card'>
+           <div className='card-name'>{name}</div>
+           <div className='card-time'>{time}</div>
+           <button onClick={() => {
+             transform()
+           }}>+</button>
+         </li>
+       )
+     }
+     const transform = () => {
+         setPendingList([])
+     }
+     ```
+
+   - 点击按钮，清除待完成所点击项
+
+     ```js
+     const BoardCard = ({ name, time, transform}) => {
+       return (
+         <li className='card'>
+           <div className='card-name'>{name}</div>
+           <div className='card-time'>{time}</div>
+           <button onClick={() => {
+             transform(name)
+           }}>+</button>
+         </li>
+       )
+     }
+     const transform = (name) => {
+         setPendingList(pendingList.filter((element, index, array) => {
+           return element.name !== name
+         }))
+     }
+     ```
+
+   - 点击按钮，将所点击项转移到进行中
+
+     ```js
+     const BoardCard = ({ name, time, transform }) => {
+       return (
+         <li className='card'>
+           <div className='card-name'>{name}</div>
+           <div className='card-time'>{time}</div>
+           <button onClick={() => {
+             transform(name)
+           }}>+</button>
+         </li>
+       );
+     };
+     const transform = (name) => {
+         setPendingList(pendingList.filter((element, index, array) => {
+           return element.name !== name
+         }))
+         const a = pendingList.find((element, index, array) => {
+           return element.name === name
+         })
+         const arr = doingList
+         arr.push(a)
+         setDoingList(arr)
+     }
+     ```
