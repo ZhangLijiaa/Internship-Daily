@@ -58,7 +58,7 @@
    ![image](https://user-images.githubusercontent.com/88357094/225797472-b1bf6796-f3bd-4e61-b26a-27b59363323e.png)
 
      ```js
-     const BoardCard = ({ name, time}) => {
+     const BoardCard = ({ name, time, transform}) => {
        return (
          <li className='card'>
            <div className='card-name'>{name}</div>
