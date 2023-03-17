@@ -54,7 +54,8 @@
 
    - 点击按钮，清除待完成所有项
 
-     ![image-20230317101037681](C:\Users\28346\AppData\Roaming\Typora\typora-user-images\image-20230317101037681.png)
+     
+   ![image](https://user-images.githubusercontent.com/88357094/225797472-b1bf6796-f3bd-4e61-b26a-27b59363323e.png)
 
      ```js
      const BoardCard = ({ name, time}) => {
@@ -80,7 +81,8 @@
 
    - 点击按钮，清除待完成所点击项
 
-     ![image-20230317101715448](C:\Users\28346\AppData\Roaming\Typora\typora-user-images\image-20230317101715448.png)
+    ![image](https://user-images.githubusercontent.com/88357094/225797502-b906efbc-dc4d-4783-a370-fb33cc8cab27.png)
+
 
      ```js
      const BoardCard = ({ name, time, transform}) => {
@@ -108,7 +110,7 @@
 
    - 点击按钮，将所点击项转移到进行中
 
-     ![image-20230317102813835](C:\Users\28346\AppData\Roaming\Typora\typora-user-images\image-20230317102813835.png)
+     ![image](https://user-images.githubusercontent.com/88357094/225797549-95df04bf-a751-416a-9196-7aab698ae5fc.png)
 
      ```js
      const BoardCard = ({ name, time, transform }) => {
