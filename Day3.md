@@ -54,24 +54,33 @@
 
    - 点击按钮，清除待完成所有项
 
+     ![image-20230317101037681](C:\Users\28346\AppData\Roaming\Typora\typora-user-images\image-20230317101037681.png)
+
      ```js
-     const BoardCard = ({ name, time, transform}) => {
+     const BoardCard = ({ name, time}) => {
        return (
          <li className='card'>
            <div className='card-name'>{name}</div>
            <div className='card-time'>{time}</div>
            <button onClick={() => {
-             transform()
+           	transform()
            }}>+</button>
          </li>
        )
      }
+     const [pendingList, setPendingList] = useState([
+         { name: '开发任务-3', time: '22-05-22 18:11' },
+         { name: '开发任务-5', time: '22-05-22 18:11' },
+         { name: '测试任务-1', time: '22-05-22 18:11' }
+     ])
      const transform = () => {
          setPendingList([])
      }
      ```
 
    - 点击按钮，清除待完成所点击项
+
+     ![image-20230317101715448](C:\Users\28346\AppData\Roaming\Typora\typora-user-images\image-20230317101715448.png)
 
      ```js
      const BoardCard = ({ name, time, transform}) => {
@@ -85,6 +94,11 @@
          </li>
        )
      }
+     const [pendingList, setPendingList] = useState([
+         { name: '开发任务-3', time: '22-05-22 18:11' },
+         { name: '开发任务-5', time: '22-05-22 18:11' },
+         { name: '测试任务-1', time: '22-05-22 18:11' }
+     ])
      const transform = (name) => {
          setPendingList(pendingList.filter((element, index, array) => {
            return element.name !== name
@@ -93,6 +107,8 @@
      ```
 
    - 点击按钮，将所点击项转移到进行中
+
+     ![image-20230317102813835](C:\Users\28346\AppData\Roaming\Typora\typora-user-images\image-20230317102813835.png)
 
      ```js
      const BoardCard = ({ name, time, transform }) => {
@@ -106,6 +122,15 @@
          </li>
        );
      };
+     const [pendingList, setPendingList] = useState([
+         { name: '开发任务-3', time: '22-05-22 18:11' },
+         { name: '开发任务-5', time: '22-05-22 18:11' },
+         { name: '测试任务-1', time: '22-05-22 18:11' }
+     ]);
+       const [doingList, setDoingList] = useState([
+         { name: '开发任务-2', time: '22-05-22 18:11' },
+         { name: '开发任务-4', time: '22-05-22 18:11' }
+     ]);
      const transform = (name) => {
          setPendingList(pendingList.filter((element, index, array) => {
            return element.name !== name
@@ -118,3 +143,5 @@
          setDoingList(arr)
      }
      ```
+
+     
