@@ -23,6 +23,48 @@ function App() {
     { name: '开发任务-5', time: '22-05-22 18:11' }
   ]);
 
+  const map1 = {
+    pending:{
+      deleteTabOperation:setPendingList,
+      fromTab:pendingList,
+      addTabOperation:setDoingList,
+      toTab:doingList
+    },
+    doing:{
+      deleteTabOperation:setDoingList,
+      fromTab:doingList,
+      addTabOperation:setPendingList,
+      toTab:pendingList
+    },
+    completed:{
+      deleteTabOperation:setCompletedList,
+      fromTab:completedList,
+      addTabOperation:setPendingList,
+      toTab:pendingList
+    }
+  }
+
+  const map2 = {
+    pending:{
+      deleteTabOperation:setPendingList,
+      fromTab:pendingList,
+      addTabOperation:setCompletedList,
+      toTab:completedList
+    },
+    doing:{
+      deleteTabOperation:setDoingList,
+      fromTab:doingList,
+      addTabOperation:setCompletedList,
+      toTab:completedList
+    },
+    completed:{
+      deleteTabOperation:setCompletedList,
+      fromTab:completedList,
+      addTabOperation:setDoingList,
+      toTab:doingList
+    }
+  }
+
   const click = (e) => {
     setShow(true)
   }
@@ -34,76 +76,30 @@ function App() {
     setShow(false)
   }
 
-  const ptodTransform = (name) => {
-    setPendingList(pendingList.filter((element, index, array) => {
+  const firstToggle = (type, name) => {
+    const {deleteTabOperation, fromTab, addTabOperation, toTab} = map1[type]
+    deleteTabOperation(fromTab.filter((element, index, array) => {
       return element.name !== name
     }))
-    const a = pendingList.find((element, index, array) => {
+    const a = fromTab.find((element, index, array) => {
       return element.name === name
     })
-    const arr1 = doingList
+    const arr1 = toTab
     arr1.push(a)
-    setDoingList(arr1)
+    addTabOperation(arr1)
   }
-  
-  const ptocTransform = (name) => {
-    setPendingList(pendingList.filter((element, index, array) => {
+
+  const secondToggle = (type, name) => {
+    const {deleteTabOperation, fromTab,addTabOperation, toTab} = map2[type]
+    deleteTabOperation(fromTab.filter((element, index, array) => {
       return element.name !== name
     }))
-    const b = pendingList.find((element, index, array) => {
+    const b = fromTab.find((element, index, array) => {
       return element.name === name
     })
-    const arr2 = completedList
+    const arr2 = toTab
     arr2.push(b)
-    setCompletedList(arr2)
-  }
-
-  const dtopTransform = (name) => {
-    setDoingList(doingList.filter((element, index, array) => {
-      return element.name !== name
-    }))
-    const c = doingList.find((element, index, array) => {
-      return element.name === name
-    })
-    const arr3 = pendingList
-    arr3.push(c)
-    setPendingList(arr3)
-  }
-
-  const dtocTransform = (name) => {
-    setDoingList(doingList.filter((element, index, array) => {
-      return element.name !== name
-    }))
-    const d = doingList.find((element, index, array) => {
-      return element.name === name
-    })
-    const arr4 = completedList
-    arr4.push(d)
-    setCompletedList(arr4)
-  }
-  
-  const ctopTransform = (name) => {
-    setCompletedList(completedList.filter((element, index, array) => {
-      return element.name !== name
-    }))
-    const e = completedList.find((element, index, array) => {
-      return element.name === name
-    })
-    const arr5 = pendingList
-    arr5.push(e)
-    setPendingList(arr5)
-  }
-
-  const ctodTransform = (name) => {
-    setCompletedList(completedList.filter((element, index, array) => {
-      return element.name !== name
-    }))
-    const f = completedList.find((element, index, array) => {
-      return element.name === name
-    })
-    const arr6 = doingList
-    arr6.push(f)
-    setDoingList(arr6)
+    addTabOperation(arr2)
   }
 
   return (
@@ -118,15 +114,15 @@ function App() {
             </>
           }>
             { show ? <AddBoardCard onSubmit={submit} /> : ''}
-            {pendingList.map(item => <BoardCard key={item.name} {...item} type='pending'  ptodTransform={ptodTransform} ptocTransform={ptocTransform}/>)}
+            {pendingList.map(item => <BoardCard key={item.name} {...item} type='pending'  firstToggle={firstToggle} secondToggle={secondToggle}/>)}
         </BoardColumn>
 
         <BoardColumn className="column-doing" name="处理中">
-          { doingList.map(item => <BoardCard key={item.name} {...item} type='doing'  dtopTransform={dtopTransform} dtocTransform={dtocTransform} />) }
+          { doingList.map(item => <BoardCard key={item.name} {...item} type='doing'  firstToggle={firstToggle} secondToggle={secondToggle} />) }
         </BoardColumn>
 
         <BoardColumn className="column-completed" name="已完成">
-          { completedList.map(item => <BoardCard key={item.name} {...item} type='completed' ctopTransform={ctopTransform} ctodTransform={ctodTransform}/>) }
+          { completedList.map(item => <BoardCard key={item.name} {...item} type='completed' firstToggle={firstToggle} secondToggle={secondToggle}/>) }
         </BoardColumn>
       </Board>
     </div >
