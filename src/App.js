@@ -45,11 +45,11 @@ function App() {
   }
 
   const map2 = {
-    pending:{
-      deleteTabOperation:setPendingList,
-      fromTab:pendingList,
-      addTabOperation:setCompletedList,
-      toTab:completedList
+    pending:{//操作标识符
+      deleteTabOperation:setPendingList,//删除数据列表
+      fromTab:pendingList,//要被删除的数据来源
+      addTabOperation:setCompletedList,//添加数据列表
+      toTab:completedList//要被添加的数据列表
     },
     doing:{
       deleteTabOperation:setDoingList,
@@ -76,31 +76,22 @@ function App() {
     setShow(false)
   }
 
-  const firstToggle = (type, name) => {
-    const {deleteTabOperation, fromTab, addTabOperation, toTab} = map1[type]
+  const firstToggle = (type, name, map) => {
+    //把map里的数据解构赋值
+    const {deleteTabOperation, fromTab, addTabOperation, toTab} = map[type]
+    //删除fromTab的数据
     deleteTabOperation(fromTab.filter((element, index, array) => {
       return element.name !== name
     }))
+    //找到fromTab中被点击的那条数据项
     const a = fromTab.find((element, index, array) => {
       return element.name === name
     })
-    const arr1 = toTab
-    arr1.push(a)
-    addTabOperation(arr1)
+    //const arr1 = toTab
+    toTab.push(a)//把被点击的那条数据项添加到toTab中
+    addTabOperation(toTab)//将toTab作为addTabOperation的参数，更新对应的值
   }
 
-  const secondToggle = (type, name) => {
-    const {deleteTabOperation, fromTab,addTabOperation, toTab} = map2[type]
-    deleteTabOperation(fromTab.filter((element, index, array) => {
-      return element.name !== name
-    }))
-    const b = fromTab.find((element, index, array) => {
-      return element.name === name
-    })
-    const arr2 = toTab
-    arr2.push(b)
-    addTabOperation(arr2)
-  }
 
   return (
     <div className='App'>
@@ -114,15 +105,15 @@ function App() {
             </>
           }>
             { show ? <AddBoardCard onSubmit={submit} /> : ''}
-            {pendingList.map(item => <BoardCard key={item.name} {...item} type='pending'  firstToggle={firstToggle} secondToggle={secondToggle}/>)}
+            {pendingList.map(item => <BoardCard key={item.name} {...item} type='pending'  firstToggle={firstToggle} map1={map1} map2={map2}/>)}
         </BoardColumn>
 
         <BoardColumn className="column-doing" name="处理中">
-          { doingList.map(item => <BoardCard key={item.name} {...item} type='doing'  firstToggle={firstToggle} secondToggle={secondToggle} />) }
+          { doingList.map(item => <BoardCard key={item.name} {...item} type='doing'  firstToggle={firstToggle} map1={map1} map2={map2}/>) }
         </BoardColumn>
 
         <BoardColumn className="column-completed" name="已完成">
-          { completedList.map(item => <BoardCard key={item.name} {...item} type='completed' firstToggle={firstToggle} secondToggle={secondToggle}/>) }
+          { completedList.map(item => <BoardCard key={item.name} {...item} type='completed' firstToggle={firstToggle} map1={map1} map2={map2}/>) }
         </BoardColumn>
       </Board>
     </div >
