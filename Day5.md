@@ -12,7 +12,7 @@
    ```shell
    $ git add .
    $ git commit -m "提交说明"
-   $ git push origin master
+   $ git push origin main
    ```
 
 2. Object对象
@@ -241,6 +241,7 @@
      > lastIndexOf方法**返回给定元素在数组中最后一次出现的位置，如果没有出现则返回-1**。<u>不改变原数组</u>。
      >
      > 形参：要找的元素。
+<<<<<<< HEAD
      
      ```js
      var arr = [1, 3, 2, 4, 3, 3, 7, 8]
@@ -270,3 +271,5 @@
      console.log(arr) //[1, 3, 2, 4, 3, 3, 7, 8]
      console.log(res) //4
      ```
+=======
+>>>>>>> eef307a77512aec16c0d76d4be576f21067cca94
