@@ -272,5 +272,3 @@
      console.log(arr) //[1, 3, 2, 4, 3, 3, 7, 8]
      console.log(res) //4
      ```
-=======
->>>>>>> eef307a77512aec16c0d76d4be576f21067cca94
