@@ -145,11 +145,12 @@
        var person = {...name, ...age}
        console.log(person) //{"name":"张三", "age":18}
        ```
-
+       
      - 数组的扩展
-
-       > 像是剩余参数的逆运算，**将一个数组转为用逗号分隔的参数系列**。
-
+     
+       > 像是剩余参数的逆运算，**将一个数组转为用逗号分隔的参数系列**
+     
+       
        ```js
        //解构赋值
        console.log(...[1, 2, 3]) //1 2 3
@@ -157,9 +158,9 @@
        //合并数组
        console.log([...[1, 2], ...[3, 4]]) //[1, 2, 3, 4]
        ```
-
+     
      - 函数的扩展
-
+     
        ```js
        //基本用法
        function add(x, y, z) {
@@ -168,11 +169,11 @@
        var numbers = [1, 2, 3, 4]
        add(...numbers) //6
        ```
-
+   
    - 解构赋值
-
+   
      - 数组解构
-
+   
        ```js
        //基本用法
        let color = ["red", "orange", "yellow"]
@@ -182,9 +183,10 @@
        //剩余运算符
        let [a, ...b] = [1, 2, 3] //a = 1 b = [2, 3]
        ```
-
+   
+   
      - 对象解构
-
+   
        ```js
        //基本用法
        let person = {name:"张三", age:18, sex:"男"}
@@ -195,4 +197,132 @@
        //剩余运算符
        let {a, b, ...rest} = {a:1, b:2, c:3, d:4} //a = 1 b = 2 rest = {c:3, d:4}
        ```
-4. 优化代码抽成函数，将不同的地方变成函数的参数
+
+4. 关于demo代码优化
+
+   > 观察程序中相似代码的六个函数，根据功能的具体实现，找出解决问题的相同思路，抽成一个函数。
+   >
+   > 因为这六个函数所实现的整体功能都是从源tab栏中找到被点击的数据项进行删除操作，接着将这一条数据项添加到目的tab栏中。
+   >
+   > 所以定义一个函数Toggle，有了以下两种方案
+
+   1. 定义map对象，整体共三个对象（为了区分而定义的type值：pending、doing、completed），每个对象里面的内容如下：
+
+      - key值为根据功能所划分的四个项：
+
+        1. 删除操作deleteTabOperation——对应setXxxingList（XxxList为源tab栏）函数
+        2. 源tab栏fromTab——对应xxxingList
+        3. 添加操作addTabOperation——对应setXxxingList（XxxList为目的tab栏）函数
+        4. 目的tab栏toTab——对应xxxingList
+
+      - value值为每项具体的值，在函数中使用map时通过解构赋值把map中的key解构出来即可
+
+      - 这时，函数只需要type和name两个参数，并且因为考虑到一个源tab栏两个按钮会对应两个不同的目的tab栏，所以定义了两个map（map1、map2）和两个函数（firstToggle、secondToggle），具体实现如下：
+
+        ```js
+          const map1 = {
+            pending:{
+              deleteTabOperation:setPendingList,
+              fromTab:pendingList,
+              addTabOperation:setDoingList,
+              toTab:doingList
+            },
+            doing:{
+              deleteTabOperation:setDoingList,
+              fromTab:doingList,
+              addTabOperation:setPendingList,
+              toTab:pendingList
+            },
+            completed:{
+              deleteTabOperation:setCompletedList,
+              fromTab:completedList,
+              addTabOperation:setPendingList,
+              toTab:pendingList
+            }
+          }
+        
+          const map2 = {
+            pending:{
+              deleteTabOperation:setPendingList,
+              fromTab:pendingList,
+              addTabOperation:setCompletedList,
+              toTab:completedList
+            },
+            doing:{
+              deleteTabOperation:setDoingList,
+              fromTab:doingList,
+              addTabOperation:setCompletedList,
+              toTab:completedList
+            },
+            completed:{
+              deleteTabOperation:setCompletedList,
+              fromTab:completedList,
+              addTabOperation:setDoingList,
+              toTab:doingList
+            }
+          }
+          
+          const firstToggle = (type, name) => {
+            const {deleteTabOperation, fromTab, addTabOperation, toTab} = map1[type]
+            deleteTabOperation(fromTab.filter((element, index, array) => {
+              return element.name !== name
+            }))
+              
+            const a = fromTab.find((element, index, array) => {
+              return element.name === name
+            })
+            
+            const arr1 = toTab
+            arr1.push(a)
+            addTabOperation(arr1)
+          }
+          
+          const secondToggle = (type, name) => {
+            const {deleteTabOperation, fromTab,addTabOperation, toTab} = map2[type]
+            deleteTabOperation(fromTab.filter((element, index, array) => {
+              return element.name !== name
+            }))
+            
+            const b = fromTab.find((element, index, array) => {
+              return element.name === name
+            })
+            
+            const arr2 = toTab
+            arr2.push(b)
+            addTabOperation(arr2)
+          }
+        ```
+
+      - 但是如上发现map1和map2只有toTab不同，所以有了下面第二种方法
+
+   2. 不额外定义对象（map1、map2），直接把根据功能所划分的四个项（deleteTabOperation, fromTab, addTabOperation, toTab）添加到函数的形参中。
+
+      - 在使用函数的时候将具体的值作为实参传过去就好了
+
+        ```js
+          const Toggle = (name, deleteTabOperation, fromTab, addTabOperation, toTab) =>   {
+            //删除fromTab的数据
+            deleteTabOperation(fromTab.filter((element, index, array) => {
+              return element.name !== name
+            }))
+            //找到fromTab中被点击的那条数据项
+            const a = fromTab.find((element, index, array) => {
+              return element.name === name
+            })
+            //const arr1 = toTab
+            toTab.push(a)//把被点击的那条数据项添加到toTab中
+            addTabOperation(toTab)//将toTab作为addTabOperation的参数，更新对应的值
+          }
+          //函数使用以pendingList举例如下：
+          {pendingList.map(item => <BoardCard key={item.name} 
+        	{...item} 
+        	type='pending'  
+        	Toggle={Toggle} 
+        	remove={setPendingList} 
+        	add1={setDoingList} 
+        	deleteData={pendingList} 
+        	addData1={doingList} 
+        	add2={setCompletedList}  
+        	addData2={completedList}/>
+          )}
+        ```

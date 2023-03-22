@@ -34,7 +34,7 @@ function App() {
     setShow(false)
   }
 
-  const firstToggle = (name, deleteTabOperation, fromTab, addTabOperation, toTab) => {
+  const Toggle = (name, deleteTabOperation, fromTab, addTabOperation, toTab) => {
     //把map里的数据解构赋值
     //删除fromTab的数据
     deleteTabOperation(fromTab.filter((element, index, array) => {
@@ -62,15 +62,15 @@ function App() {
             </>
           }>
             { show ? <AddBoardCard onSubmit={submit} /> : ''}
-            {pendingList.map(item => <BoardCard key={item.name} {...item} type='pending'  firstToggle={firstToggle} remove={setPendingList} add1={setDoingList} deleteData={pendingList} addData1={doingList} add2={setCompletedList}  addData2={completedList}/>)}
+            {pendingList.map(item => <BoardCard key={item.name} {...item} type='pending'  Toggle={Toggle} remove={setPendingList} add1={setDoingList} deleteData={pendingList} addData1={doingList} add2={setCompletedList}  addData2={completedList}/>)}
         </BoardColumn>
 
         <BoardColumn className="column-doing" name="处理中">
-          { doingList.map(item => <BoardCard key={item.name} {...item} type='doing'  firstToggle={firstToggle} remove={setDoingList} add1={setPendingList} deleteData={doingList} addData1={pendingList} add2={setCompletedList}  addData2={completedList}/>)}
+          { doingList.map(item => <BoardCard key={item.name} {...item} type='doing'  Toggle={Toggle} remove={setDoingList} add1={setPendingList} deleteData={doingList} addData1={pendingList} add2={setCompletedList}  addData2={completedList}/>)}
         </BoardColumn>
 
         <BoardColumn className="column-completed" name="已完成">
-          { completedList.map(item => <BoardCard key={item.name} {...item} type='completed' firstToggle={firstToggle} remove={setCompletedList} add1={setPendingList} deleteData={completedList} addData1={pendingList} add2={setDoingList}  addData2={doingList}/>)}
+          { completedList.map(item => <BoardCard key={item.name} {...item} type='completed' Toggle={Toggle} remove={setCompletedList} add1={setPendingList} deleteData={completedList} addData1={pendingList} add2={setDoingList}  addData2={doingList}/>)}
         </BoardColumn>
       </Board>
     </div >
