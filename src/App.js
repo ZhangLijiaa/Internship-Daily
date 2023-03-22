@@ -34,7 +34,7 @@ function App() {
     setShow(false)
   }
 
-  const firstToggle = (type, name, deleteTabOperation, fromTab, addTabOperation, toTab) => {
+  const firstToggle = (name, deleteTabOperation, fromTab, addTabOperation, toTab) => {
     //把map里的数据解构赋值
     //删除fromTab的数据
     deleteTabOperation(fromTab.filter((element, index, array) => {
