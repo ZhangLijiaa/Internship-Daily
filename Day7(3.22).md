@@ -4,11 +4,38 @@
 
    > 将todos的第二条标记成完成（isComplete改变为true）
    >
-   > 当state的数据结构比较复杂时，可以使用immer
-   >
-   > 当state的数据结构比较简单时，可以使用扩展运算符
 
    ```js
+   //当state的数据结构比较简单时，可以使用扩展运算符
+   const [todos, setTodos] = useState([
+       {
+         id: "4646DGEGN",
+         title:"烧开水",
+         isComplete: true
+       },
+       {
+         id: "ETET12412",
+         title:"抓蚯蚓",
+         isComplete: false
+       },
+       {
+         id: "464635235fe",
+         title:"晾干",
+         isComplete: false
+       }
+     ])
+     setTodos([
+         ...todos.slice(0, 1),
+         //数组内的对象同样应该是不可变的，所以必须新建一个对象
+         {...todos[1], isComplete: true},
+         ...todos.slice(2)
+     ])
+   ```
+
+   ```js
+   //当state的数据结构比较复杂时，可以使用immer
+   //使用之前通过npm install -S immer安装一下
+   import produce from 'immer'
    const [todos, setTodos] = useState([
        {
          id: "4646DGEGN",
@@ -35,10 +62,7 @@
          }
        },
      ])
-     /*
-     	可以直接修改，immer会为我们生成一个新的实例draft，直接set就好
-     	使用之前通过npm install -S immer安装一下
-     */
+     //可以直接修改，immer会为我们生成一个新的实例draft，直接set就好
      const newTodos = produce(todos, draft => {
        draft[1].status.isComplete = true
      })
@@ -144,10 +168,10 @@
 
    2. 不额外定义对象（map1、map2），直接把根据功能所划分的四个项（deleteTabOperation, fromTab, addTabOperation, toTab）添加到函数的形参中。
 
-      - 在使用函数的时候将具体的值作为实参传过去就好了
+      - 函数的定义
 
         ```js
-        const Toggle = (name, deleteTabOperation, fromTab, addTabOperation, toTab) =>   {
+          const Toggle = (name, deleteTabOperation, fromTab, addTabOperation, toTab) =>   {
             //删除fromTab的数据
             deleteTabOperation(fromTab.filter((element, index, array) => {
               return element.name !== name
@@ -160,7 +184,31 @@
             toTab.push(a)//把被点击的那条数据项添加到toTab中
             addTabOperation(toTab)//将toTab作为addTabOperation的参数，更新对应的值
           }
-          //函数使用以pendingList举例如下：
+        ```
+
+      - 在BoardCard中
+
+        ```js
+        const BoardCard = ({ name, time, Toggle, remove, add1, deleteData, addData1, add2, addData2 }) => {
+          return (
+            <li className='card'>
+              <div className='card-name'>{name}</div>
+              <div className='card-time'>{time}</div>
+              <button onClick={() => {
+                  Toggle(name, remove, deleteData, add1, addData1)
+              }}>第一个</button>
+              <button onClick={() => {
+                  Toggle(name, remove, deleteData, add2, addData2)
+              }}>第二个</button>
+            </li>
+          );
+        };
+        ```
+
+      - 在使用函数的时候将具体的值作为实参传过去就好了
+
+        ```js
+        //函数使用以pendingList举例如下：
           {pendingList.map(item => <BoardCard key={item.name} 
         	{...item} 
         	type='pending'  
